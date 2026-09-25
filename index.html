@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="header-left">
+      <span class="logo-icon">💰</span>
+      <h1 class="app-title">Expense &amp; Budget Visualizer</h1>
+    </div>
+    <button id="theme-toggle" class="btn btn-icon" aria-label="Toggle dark/light mode" title="Toggle Dark/Light Mode">
+      <span id="theme-icon">🌙</span>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== BALANCE CARD ===== -->
+    <section class="balance-card" aria-label="Total Expenses">
+      <p class="balance-label">Total Expenses</p>
+      <h2 class="balance-amount" id="total-balance">Rp 0</h2>
+      <div class="budget-bar-wrapper" title="Budget usage">
+        <div class="budget-bar" id="budget-bar"></div>
+      </div>
+      <p class="budget-hint" id="budget-hint">Set a budget limit below to track usage.</p>
+    </section>
+
+    <!-- ===== WARNING BANNER ===== -->
+    <div class="warning-banner hidden" id="warning-banner" role="alert">
+      ⚠️ <strong>Warning!</strong> Your expenses have exceeded the budget limit!
+    </div>
+
+    <div class="layout-grid">
+
+      <!-- ===== LEFT COLUMN ===== -->
+      <div class="left-col">
+
+        <!-- BUDGET LIMIT FORM -->
+        <section class="card" aria-label="Set Budget Limit">
+          <h3 class="card-title">Set Budget Limit</h3>
+          <div class="form-group">
+            <label for="budget-input">Budget (Rp)</label>
+            <input type="number" id="budget-input" class="form-control" placeholder="e.g. 500000" min="0" />
+          </div>
+          <button id="set-budget-btn" class="btn btn-primary btn-full">Set Budget</button>
+        </section>
+
+        <!-- ADD TRANSACTION FORM -->
+        <section class="card" aria-label="Add Transaction">
+          <h3 class="card-title">Add Expense</h3>
+          <form id="transaction-form" novalidate>
+            <div class="form-group">
+              <label for="item-name">Item Name <span class="required">*</span></label>
+              <input type="text" id="item-name" class="form-control" placeholder="e.g. Lunch, Grab, Cinema" maxlength="50" />
+              <span class="error-msg" id="name-error"></span>
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount (Rp) <span class="required">*</span></label>
+              <input type="number" id="amount" class="form-control" placeholder="e.g. 25000" min="1" />
+              <span class="error-msg" id="amount-error"></span>
+            </div>
+            <div class="form-group">
+              <label for="category">Category <span class="required">*</span></label>
+              <select id="category" class="form-control">
+                <option value="">-- Select Category --</option>
+                <option value="Food">🍔 Food</option>
+                <option value="Transport">🚗 Transport</option>
+                <option value="Fun">🎉 Fun</option>
+              </select>
+              <span class="error-msg" id="category-error"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">+ Add Expense</button>
+          </form>
+        </section>
+
+      </div>
+
+      <!-- ===== RIGHT COLUMN ===== -->
+      <div class="right-col">
+        <section class="card" aria-label="Transaction List">
+          <div class="list-header">
+            <h3 class="card-title">Transactions</h3>
+            <div class="sort-controls">
+              <label for="sort-by" class="sort-label">Sort:</label>
+              <select id="sort-by" class="form-control form-control-sm">
+                <option value="date-desc">Newest First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="amount-desc">Amount ↓</option>
+                <option value="amount-asc">Amount ↑</option>
+                <option value="category-az">Category A–Z</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="filter-pills" id="filter-pills" role="group" aria-label="Filter by category">
+            <button class="pill active" data-filter="All">All</button>
+            <button class="pill" data-filter="Food">🍔 Food</button>
+            <button class="pill" data-filter="Transport">🚗 Transport</button>
+            <button class="pill" data-filter="Fun">🎉 Fun</button>
+          </div>
+
+          <ul class="transaction-list" id="transaction-list" aria-live="polite">
+            <!-- Populated by JS -->
+          </ul>
+
+          <p class="list-empty hidden" id="list-empty">No transactions yet. Add one above!</p>
+
+          <button id="clear-all-btn" class="btn btn-danger btn-full mt-sm hidden">🗑 Clear All</button>
+        </section>
+
+        <!-- CHART -->
+        <section class="card" aria-label="Expense Chart">
+          <h3 class="card-title">Expenses by Category</h3>
+          <div class="chart-wrapper">
+            <canvas id="expense-chart" aria-label="Pie chart of expenses by category"></canvas>
+            <p class="chart-empty" id="chart-empty">No data yet. Add an expense to see the chart.</p>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Expense &amp; Budget Visualizer &copy; 2026 — data stored locally in your browser.</p>
+  </footer>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
